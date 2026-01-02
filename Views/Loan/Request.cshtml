@@ -1,0 +1,23 @@
+@{
+    ViewData["Title"] = "Request Loan";
+}
+
+<h3>Request Loan</h3>
+
+<form asp-action="Request" method="post">
+    <input type="hidden" name="bookId" value="@ViewBag.BookId" />
+
+    <div class="mb-2">
+        <label>Address</label>
+        <input name="address" class="form-control" required />
+    </div>
+
+    <div class="mb-2">
+        <label>Phone</label>
+        <input name="phone" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-warning">
+        📚 Submit Request
+    </button>
+</form>

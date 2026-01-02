@@ -1,0 +1,74 @@
+@using System
+@model IEnumerable<LibraryManagementSystem.Models.Loan>
+
+@{
+    ViewData["Title"] = "My Loans";
+}
+
+<h2>📚 My Loans</h2>
+
+@if (!Model.Any())
+{
+    <p>You have not requested any books yet.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Book</th>
+                <th>Author</th>
+                <th>Status</th>
+                <th>Requested On</th>
+                <th>Access Expires In</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var loan in Model)
+        {
+            <tr>
+                <td>@loan.Book.Title</td>
+                <td>@loan.Book.Author?.Name</td>
+                <td>
+                    <span class="badge bg-info">
+                        @loan.Status
+                    </span>
+                </td>
+                <td>@loan.RequestDate.ToShortDateString()</td>
+                <td>
+                    @{
+                        if (loan.Status == "Approved" && loan.ApprovedAt != null)
+                        {
+                            var expiryDate = loan.ApprovedAt.Value.AddDays(7);
+                            var remaining = expiryDate - DateTime.UtcNow;
+
+                            if (remaining.TotalSeconds <= 0)
+                            {
+                                <span class="badge bg-danger">Expired</span>
+                                <div class="text-muted small">
+                                    Expires on: @expiryDate.ToLocalTime().ToString("dd MMM yyyy")
+                                </div>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success">
+                                    @remaining.Days d
+                                    @remaining.Hours h
+                                    @remaining.Minutes m
+                                </span>
+                                <div class="text-muted small">
+                                    Expires on: @expiryDate.ToLocalTime().ToString("dd MMM yyyy")
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">N/A</span>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

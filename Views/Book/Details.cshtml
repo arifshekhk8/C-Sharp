@@ -1,0 +1,123 @@
+@model LibraryManagementSystem.Models.Book
+
+@{
+    ViewData["Title"] = "Book Details";
+}
+
+<!-- Alerts -->
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show m-3" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="container-fluid px-4 py-4">
+
+    <!-- Header / Hero -->
+    <div class="mb-4 pb-3 border-bottom">
+        <h1 class="fw-bold mb-1">@Model.Title</h1>
+        <p class="text-muted mb-0">
+            by <strong>@Model.Author?.Name</strong>
+        </p>
+    </div>
+
+    <!-- Info Row -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-4">
+            <div class="p-4 bg-white rounded-3 border h-100">
+                <div class="text-muted small mb-1">Category</div>
+                <div class="fw-semibold">@Model.Category?.Name</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="p-4 bg-white rounded-3 border h-100">
+                <div class="text-muted small mb-1">Publication Year</div>
+                <div class="fw-semibold">@Model.PublicationYear</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="p-4 bg-white rounded-3 border h-100">
+                <div class="text-muted small mb-1">Price</div>
+                <div class="fw-semibold">@Model.Price BDT</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Book Type -->
+    <div class="mb-4">
+        <span class="text-muted me-2">Book Type:</span>
+        <span class="badge px-3 py-2 rounded-pill
+            @(Model.BookCategory == LibraryManagementSystem.Models.BookCategory.NewlyArrived ? "bg-primary" :
+              Model.BookCategory == LibraryManagementSystem.Models.BookCategory.MostPopular ? "bg-success" :
+              "bg-secondary")">
+            @Model.BookCategory
+        </span>
+    </div>
+
+    <!-- Description -->
+    @if (!string.IsNullOrWhiteSpace(Model.Description))
+    {
+        <div class="mb-5">
+            <h5 class="fw-semibold mb-2">Description</h5>
+            <p class="text-secondary lh-lg mb-0">
+                @Model.Description
+            </p>
+        </div>
+    }
+
+    <!-- Actions -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+        <div>
+            @if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                if (ViewBag.HasApprovedLoan == true)
+                {
+                    <a asp-controller="Loan"
+                       asp-action="ReadPdf"
+                       asp-route-bookId="@Model.Id"
+                       class="btn btn-success px-4 py-2">
+                        📄 Read PDF
+                    </a>
+                }
+                else
+                {
+                    <a asp-controller="Loan"
+                       asp-action="Request"
+                       asp-route-bookId="@Model.Id"
+                       class="btn btn-warning px-4 py-2">
+                        📚 Request Loan
+                    </a>
+                }
+            }
+            else
+            {
+                <a asp-area="Identity"
+                   asp-page="/Account/Login"
+                   class="btn btn-outline-primary px-4 py-2">
+                    Login to Request
+                </a>
+            }
+        </div>
+
+        <a asp-action="Index" class="btn btn-outline-secondary px-4 py-2">
+            ⬅ Back to Books
+        </a>
+
+    </div>
+
+</div>

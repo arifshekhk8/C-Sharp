@@ -1,0 +1,57 @@
+@model IEnumerable<LibraryManagementSystem.Models.Book>
+
+@{
+    ViewData["Title"] = "Manage Books";
+}
+
+<h1>Book Management</h1>
+
+<a asp-area="Admin" asp-controller="Book" asp-action="Create"
+   class="btn btn-primary mb-3">
+    Add New Book
+</a>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Book Category</th>
+            <th>Category</th>
+            <th>Price (BDT)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var book in Model)
+    {
+        <tr>
+            <td>@book.Title</td>
+            <td>@book.Author?.Name</td>
+            <td>@book.BookCategory</td>
+            <td>@book.Category?.Name</td>
+            <td>@book.Price</td>
+            <td>
+                <a asp-area="Admin" asp-controller="Book" asp-action="Edit"
+                asp-route-id="@book.Id"
+                class="btn btn-sm btn-warning">
+                Edit
+                </a>
+                <a asp-area="Admin" asp-controller="Book" asp-action="Delete"
+                asp-route-id="@book.Id"
+                class="btn btn-sm btn-danger">
+                Delete
+                </a>
+                
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

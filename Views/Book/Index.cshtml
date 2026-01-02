@@ -1,0 +1,61 @@
+@model IEnumerable<LibraryManagementSystem.Models.Book>
+
+@{
+    ViewData["Title"] = "Books";
+}
+
+<h2>Books</h2>
+
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Category</th>
+            <th>Year</th>
+            <th>Actions</th>
+
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var book in Model)
+{
+        <tr>
+            <td>@book.Title</td>
+            <td>@book.Author?.Name</td>
+            <td>@book.Category?.Name</td>
+            <td>@book.PublicationYear</td>
+            <td>
+    <!-- DETAILS (everyone) -->
+    <a class="btn btn-sm btn-primary"
+       asp-controller="Book"
+       asp-action="Details"
+       asp-route-id="@book.Id">
+        Details
+    </a>
+
+    
+
+    <!-- USER: REQUEST LOAN -->
+    @if (User.Identity!.IsAuthenticated && !User.IsInRole("Admin"))
+    {
+        var loanedBooks = ViewBag.LoanedBookIds as List<int>;
+
+        if (loanedBooks != null && !loanedBooks.Contains(book.Id))
+        {
+            <a class="btn btn-sm btn-success ms-1"
+               asp-controller="Loan"
+               asp-action="Create"
+               asp-route-bookId="@book.Id">
+                Request Loan
+            </a>
+        }
+        
+    }
+</td>
+        </tr>
+}
+    </tbody>
+</table>

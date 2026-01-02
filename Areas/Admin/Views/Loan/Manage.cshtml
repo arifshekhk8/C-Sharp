@@ -1,0 +1,62 @@
+@model IEnumerable<LibraryManagementSystem.Models.Loan>
+
+@{
+    ViewData["Title"] = "Loan Requests";
+}
+
+
+
+
+
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Book</th>
+            <th>User</th>
+            <th>Address</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th>Requested On</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var loan in Model)
+{
+        <tr>
+            <td>@loan.Book?.Title</td>
+            <td>@loan.User?.Email</td>
+            <td>@loan.Address</td>
+            <td>@loan.Phone</td>
+            <td>@loan.Status</td>
+            <td>
+                @if (loan.Status == "Pending")
+                {
+                    <form asp-area="Admin"
+                          asp-controller="Loan"
+                          asp-action="Approve"
+                          asp-route-id="@loan.Id"
+                          method="post"
+                          style="display:inline">
+                        <button class="btn btn-success btn-sm">Approve</button>
+                    </form>
+
+                    <form asp-area="Admin"
+                          asp-controller="Loan"
+                          asp-action="Reject"
+                          asp-route-id="@loan.Id"
+                          method="post"
+                          style="display:inline">
+                        <button class="btn btn-danger btn-sm">Reject</button>
+                    </form>
+                }
+                else
+                {
+                    <span>—</span>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
