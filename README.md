@@ -59,3 +59,27 @@ LibraryManagementSystem
 ├── Program.cs           # Application startup
 ├── appsettings.json     # Configuration
 └── LibraryManagementSystem.csproj
+
+
+Step 1: Prerequisites
+
+Make sure the following software is installed on your system:
+	•	.NET SDK (version 8.0 or later)
+	•	Git
+	•	SQLite
+
+Check .NET installation:
+dotnet --version
+
+Step 2: Clone the Repository
+git clone https://github.com/arifshekhk8/C-Sharp.git
+cd C-Sharp
+
+Step 3: Restore Dependencies
+dotnet restore
+
+Step 4: Apply Database Migrations
+dotnet ef database update
+
+Step 5: Run the Application
+dotnet run
