@@ -15,6 +15,9 @@ This project supports user authentication, book management, loan requests, and a
 - View loan history and status
 
 ### Admin Features
+
+admin@library.com
+Admin@123
 - Admin dashboard with system overview
 - Manage books (Create, Read, Update, Delete)
 - Manage users (Edit / Delete)
